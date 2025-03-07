@@ -31,18 +31,18 @@ const UserSchema = new mongoose.Schema({
   orders:[
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "OrderSchema"
-    }
+      ref: "Order"
+    } 
   ]
 },{ timestamps: true });
 
-// UserSchema.pre("save",async (next)=>{
-//   if(!this.isModified("password")){
-//     this.password = await bcrypt.hash(this.password, 10);
-//   }
-//   next();
-// })
+UserSchema.pre("save",async (next)=>{
+  if(!this.isModified("password")){
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+})
 
-const User = new mongoose.model("UserSchema", UserSchema);
+const User = new mongoose.model("User", UserSchema);
 
 export default User;

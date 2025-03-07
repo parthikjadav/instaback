@@ -10,7 +10,7 @@ route.post('/add',validateUser,userController.addUser)
 
 route.get('/',authenticate,authorize(['admin']),userController.getAllUser)
 
-route.get('/update/:id',userController.updateUser)
+route.patch('/update/:id',userController.updateUser)
 
 route.delete('/delete/:id',userController.deleteUser)
 

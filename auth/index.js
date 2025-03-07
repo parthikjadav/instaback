@@ -1,14 +1,15 @@
 import jsonwebtoken from 'jsonwebtoken';
+import { env } from '../env/index.js';
 
 export const createToken = (data)=>{
-    const token = jsonwebtoken.sign({data}, process.env.SECRET_KEY);
+    const token = jsonwebtoken.sign({data}, env.SECRET_KEY);
     return token;
 } 
 
 export const verifyToken = (token)=>{
     try{
         // verify token and return data
-        const data = jsonwebtoken.verify(token, process.env.SECRET_KEY);
+        const data = jsonwebtoken.verify(token, env.SECRET_KEY);
         return data;
     }catch(err){
         return false;

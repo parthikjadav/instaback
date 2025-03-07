@@ -8,6 +8,6 @@ const CatagorySchema = new Schema(
   { timestamps: true }
 );
 
-const Catagory = mongoose.model("CatagorySchema", CatagorySchema);
+const Catagory = mongoose.model("Catagory", CatagorySchema);
 
 export default Catagory;

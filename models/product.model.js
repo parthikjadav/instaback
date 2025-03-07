@@ -1,7 +1,21 @@
 import mongoose, { Schema } from "mongoose";
 
 const ProductSchema = new Schema({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: "Category",
+    required: true,
+  },
   name: {
+    type: String,
+    required: true,
+  },
+  slug:{
     type: String,
     required: true,
   },
@@ -41,12 +55,8 @@ const ProductSchema = new Schema({
     enum: ["active", "inactive"],
     default: "active",
   },
-  category: {
-    type: String,
-    required: true,
-  },
 });
 
-const Product = mongoose.model("ProductSchema", ProductSchema);
+const Product = mongoose.model("Product", ProductSchema);
 
 export default Product;

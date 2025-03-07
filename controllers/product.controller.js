@@ -2,24 +2,24 @@ import { Product } from "../models/index.js";
 import { ProductSchema } from "../validation/zod/schema.js";
 
 const productController = {
-  getAllProducts: async(req, res) => {
+  getAllProducts: async (req, res) => {
     try {
-        const products = await Product.find();
-        res.status(200).json(products);
+      const products = await Product.find().populate("userId");
+      res.status(200).json(products);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message });
     }
   },
-  getProductById: async(req, res) => {
+  getProductById: async (req, res) => {
     try {
-        const {id} = req.params;
-        const product = await Product.findById(id);
-        res.status(200).json(product);
+      const { id } = req.params;
+      const product = await Product.findById(id).populate("userId");
+      res.status(200).json(product);
     } catch (error) {
-        res.status(500).json({ message: error.message })
+      res.status(500).json({ message: error.message });
     }
   },
-  createProduct: async(req, res) => {
+  createProduct: async (req, res) => {
     try {
       const validateProduct = ProductSchema.safeParse(req.body);
       if (!validateProduct.success) {
@@ -28,6 +28,7 @@ const productController = {
           .json({ message: validateProduct.error.issues[0].message });
       }
       const {
+        userId,
         name,
         description,
         price,
@@ -41,6 +42,7 @@ const productController = {
         brand,
       } = req.body;
       const product = await Product.create({
+        userId,
         name,
         description,
         price,
@@ -69,16 +71,16 @@ const productController = {
   },
   updateProduct: async (req, res) => {
     try {
-        const {id} = req.params;
-        const product = await Product.findByIdAndUpdate(id,req.body,{
-            new: true,
-            runValidators: true,
-        });
-        res.status(200).json({product});
-    }catch(e){
-        res.status(500).json({ message: e.message });
+      const { id } = req.params;
+      const product = await Product.findByIdAndUpdate(id, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      res.status(200).json({ product });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
     }
-  }
+  },
 };
 
 export default productController;

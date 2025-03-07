@@ -1,41 +1,38 @@
 import express from "express";
 import cors from "cors";
+import http from "http"; // Import only http
+import { Server } from "socket.io"; // Import Server from socket.io
 import { configDotenv } from "dotenv";
 import coonnectDB from "./db/index.js";
-import { Order, Catagory, Product, User } from "./models/index.js";
 import Router from "./routes/index.js";
 import cookieParser from "cookie-parser";
 
 configDotenv();
-const app = express();
 
-// access cookies
+const app = express();
+const server = http.createServer(app);
+
+// Access cookies
 app.use(cookieParser());
 
-// parse data to json
+// Parse JSON data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// allow crediencials 
+// Allow credentials
 app.use(cors({
   credentials: true,
 }));
 
-
-// use router 
-app.use("/v1",Router)
+// Use router 
+app.use("/v1", Router);
 
 coonnectDB();
 
-
 app.get("/", async (req, res) => {
-//   const users = await User.find();
-//   const orders = await Order.find();
-//   const catagorys = await Catagory.find();
-//   const products = await Product.find();
   res.json("success");
 });
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log("server is running on http://localhost:3000");
 });
